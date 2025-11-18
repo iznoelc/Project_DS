@@ -70,7 +70,10 @@ public class DiWeGraph implements Graph {
 
     @Override
     public boolean removeEdge(Node source, Node sink) {
-        // TODO: Landon
+        // Removes the edge between source and sink.
+        if (searchVertices(source) != null && searchVertices(sink) != null && searchVertices(source).contains(sink)){
+            return searchVertices(source).remove(sink);
+        }
         return false;
     }
 
@@ -91,6 +94,13 @@ public class DiWeGraph implements Graph {
     @Override
     public void printGraph() {
         // TODO: Landon
+        System.out.println("===PRINTING GRAPH===");
+        for (LinkedList<Node> vertex : graph){
+            System.out.println("Vertex " + vertex.getFirst().getValue());
+            for (Node node : edges){
+                System.out.println("    -> " + node.getEdge().getSink());
+            }
+        }
     }
 
     @Override
@@ -104,6 +114,17 @@ public class DiWeGraph implements Graph {
     @Override
     public void printEdges(Node u) {
         // TODO: Landon
+        if(searchVertices(u) == null){
+            System.out.println("Vertex " + u.getValue() + " does not exist in graph");
+        }
+        else{
+            System.out.println("Vertex " + u.getValue() + " has the following connections:");
+            for (Node node : edges){
+                System.out.println("    -> " + node.getEdge().getSink());
+            }
+
+
+        }
     }
 
     @Override
