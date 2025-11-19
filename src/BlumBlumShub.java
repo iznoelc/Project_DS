@@ -83,7 +83,7 @@ public class BlumBlumShub {
     public byte[] buffer(int size) {
         byte[] buf = new byte[size];
         for (int i = 0; i < size; i++) {
-            buf[i] = (byte) nextByte();
+            buf[i] = (byte) nextByte(5);
         }
         return buf;
     }
