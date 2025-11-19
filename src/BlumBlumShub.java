@@ -78,16 +78,4 @@ public class BlumBlumShub {
         }
         return b;
     }
-
-    /*
-    //generates arrays of bytes
-    public byte[] buffer(int size) {
-        byte[] buf = new byte[size];
-        for (int i = 0; i < size; i++) {
-            buf[i] = (byte) nextByte();
-        }
-        return buf;
-    }
-
-*/
 }
