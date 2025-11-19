@@ -6,7 +6,7 @@ import java.nio.file.StandardOpenOption;
 import java.io.IOException;
 
 public class FileHandler {
-
+/*
     public boolean exportGraph(DiWeGraph<Integer> graph) throws IOException {
         File myFile = new File("graph."+"graphName"+".txt");
         String path = System.getProperty("user.dir") + "\\src\\graph." + "graphName" +".txt";
@@ -36,6 +36,7 @@ public class FileHandler {
 
         return true;
     }
+ */
 
 }
 

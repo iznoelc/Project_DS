@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.math.BigInteger;
 
 public class BlumBlumShub {
     //range made by p and q
@@ -6,8 +7,11 @@ public class BlumBlumShub {
     //starting number, must not be divisible by p or q
     int seed;
     //where are we right now in the process?
-    int current_num;
+    int current_state;
 
+
+
+    //helper methods for math stuff
     public boolean isPrime(int num){
         //if the number is 1 or negative it is not prime
         if(num <= 1){return false;}
@@ -19,31 +23,71 @@ public class BlumBlumShub {
         }
         return true;
     }
+    private boolean isCoprime(int a, int b) {
+        //make big integer objects to be plugged in later
+        BigInteger bigA = BigInteger.valueOf(a);
+        BigInteger bigB = BigInteger.valueOf(b);
+        //use built in gcd method, it checks if it's a coprime or not
+        BigInteger gcd = bigA.gcd(bigB);
+        //convert result to int
+        int result = gcd.intValue();
+        //check int to find result
+        if(result == 1){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 
     public void setUp(int p, int q, int seed){
-        //if p and q are prime, seed is valid, then set values
-        if(isPrime(p) == true && isPrime(q) == true && seed%p != 0 && seed%q != 0){
+        //check p and q are prime and congruent to 3%4 for randomness
+        if(isPrime(p) && isPrime(q) && p % 4 == 3 && q % 4 == 3){
             this.range = p*q;
-            this.seed = seed;
-            this.current_num = seed;
+            //check seed is coprime to q and p (not divisible by them)
+            if(isCoprime(seed,p) && isCoprime(seed,q)){
+                this.seed = seed;
+                this.current_state = seed;
+            } else {
+                System.out.println("ERROR: Invalid seed Input");
+            }
+
         } else {
-            System.out.println("ERROR: Invalid Input");
+            System.out.println("ERROR: Invalid p or q Input");
         }
     }
 
-    public int getBit(){
-        //square current number and update within set range
-        current_num = (current_num * current_num) % range;
-        //return whether the random number is even or odd, this will be called recursively later
-        return current_num % 2;
+    //deals with
+    private int nextState() {
+        //squares state, makes sure its in range, multiplies, and finally updates
+        current_state = (int)((long)current_state * current_state % range); // avoid overflow
+        return current_state;
     }
 
-    public int getRandomNumber(int max){
-        int random_num = 0;
-        for(int bit = 0; bit < max; bit++){
-            random_num += getBit();
+    //advances using nextbit and returns either 0 or 1
+    public int nextBit() {
+        return nextState() & 1;
+    }
+
+    //loops 8 times, either advances one or takes a random bit
+    public int nextByte(int bitNum) {
+        int b = 0;
+        for (int i = 0; i < bitNum; i++) {
+            b = (b << 1) | nextBit();
         }
-        return random_num;
+        return b;
     }
 
+    /*
+    //generates arrays of bytes
+    public byte[] buffer(int size) {
+        byte[] buf = new byte[size];
+        for (int i = 0; i < size; i++) {
+            buf[i] = (byte) nextByte();
+        }
+        return buf;
+    }
+
+*/
 }

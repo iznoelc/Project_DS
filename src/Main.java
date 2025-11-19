@@ -2,6 +2,8 @@
 public class Main {
     public static void main(String[] args){
         //setup random generator
+        //Note: it is predictable/will produce same random results as long as it has the same seed
+        //change seed or bitNum = change results
         BlumBlumShub BBS = new BlumBlumShub();
         BBS.setUp(11, 19, 3);
 
@@ -9,9 +11,9 @@ public class Main {
         Graph<Integer> test = new DiWeGraph<>();
 
         //make nodes
-        Node<Integer> node1 = new Node<>(BBS.getRandomNumber(5));
-        Node<Integer> node2 = new Node<>(BBS.getRandomNumber(5));
-        Node<Integer> node3 = new Node<>(BBS.getRandomNumber(5));
+        Node<Integer> node1 = new Node<>(BBS.nextByte(5));
+        Node<Integer> node2 = new Node<>(BBS.nextByte(5));
+        Node<Integer> node3 = new Node<>(BBS.nextByte(5));
 
         //make vertices
         test.addVertex(node1);
