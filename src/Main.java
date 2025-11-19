@@ -1,25 +1,30 @@
 
 public class Main {
     public static void main(String[] args){
-        Node<Integer> node1 = new Node<>(5);
-        Node<Integer> node2 = new Node<>(6);
+        //setup random generator
+        BlumBlumShub BBS = new BlumBlumShub();
+        BBS.setUp(11, 19, 3);
 
+        //make graph
         Graph<Integer> test = new DiWeGraph<>();
 
-        // add vertex 5 and 6
+        //make nodes
+        Node<Integer> node1 = new Node<>(BBS.getRandomNumber(5));
+        Node<Integer> node2 = new Node<>(BBS.getRandomNumber(5));
+        Node<Integer> node3 = new Node<>(BBS.getRandomNumber(5));
+
+        //make vertices
         test.addVertex(node1);
         test.addVertex(node2);
+        test.addVertex(node3);
 
-        // print edges of 5
-        test.printEdges(node1);
-
-        // add an edge from 5 to 6 with weight 125
+        //make edges
         test.addEdge(node1, node2, 125);
+        test.addEdge(node1, node3, 100);
+        test.addEdge(node2, node3, 150);
+        test.addEdge(node3, node2, 150);
 
-        // print updated edges of 5
-        test.printEdges(node1);
-
-        // then print the graph
+        // print graph
         System.out.println("===");
         test.printGraph();
         System.out.println("===");
