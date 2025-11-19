@@ -152,4 +152,6 @@ public class DiWeGraph<T> implements Graph<T> {
         }
         return null; // edge does not exist
     }
+
+    public List<Node<T>> getGraph(){return this.graph;}
 }
