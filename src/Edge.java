@@ -1,9 +1,9 @@
-public class Edge {
+public class Edge<T> {
     private int weight;
-    private Node source;
-    private Node sink;
+    private Node<T> source;
+    private Node<T> sink;
 
-    public Edge(int weight, Node source, Node sink){
+    public Edge(int weight, Node<T> source, Node<T> sink){
         this.weight = weight;
         this.source = source;
         this.sink = sink;
@@ -13,11 +13,11 @@ public class Edge {
         return weight;
     }
 
-    public Node getSource(){
+    public Node<T> getSource(){
         return source;
     }
 
-    public Node getSink(){
+    public Node<T> getSink(){
         return sink;
     }
 }

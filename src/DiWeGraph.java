@@ -5,39 +5,39 @@ import java.util.ArrayList;
 /**
  * A class intended to represent a directed, weighted graph
  */
-public class DiWeGraph implements Graph {
-    private List<LinkedList<Node>> graph;
+public class DiWeGraph<T> implements Graph<T> {
+    private List<Node<T>> graph;
 
     public DiWeGraph(){
         this.graph = new ArrayList<>();
     }
 
     @Override
-    public boolean addVertex(Node vertex) {
+    public boolean addVertex(Node<T> vertex) {
         // return false if value already exists in graph (no duplicates!)
 
         // we can automatically skip while loop logic if the graph is empty because then there will obviously
         // not be a duplicate
         if(!graph.isEmpty()){
             if (searchVertices(vertex) != null){
-                System.out.println("LOG: Could not add " + vertex.getValue() + " to the graph because it already exists!");
+//                System.out.println("LOG: Could not add " + vertex.getValue() + " to the graph because it already exists!");
                 return false;
             }
         }
 
-        LinkedList<Node> newVertex = new LinkedList<>(); // create a new linked list to store desired value in
-        newVertex.add(vertex); // add desired value to start of linked list
-        graph.add(newVertex); // add new linked list (vertex) to the graph
+        //LinkedList<Node<T>> newVertex = new LinkedList<>(); // create a new linked list to store desired value in
+        //newVertex.add(vertex); // add desired value to start of linked list
+        graph.add(vertex); // add new linked list (vertex) to the graph
 
-        System.out.println("LOG: Successfully added " + vertex.getValue() + " to graph.");
+//        System.out.println("LOG: Successfully added " + vertex.getValue() + " to graph.");
         return true;
     }
 
     @Override
-    public boolean removeVertex(Node vertex) {
+    public boolean removeVertex(Node<T> vertex) {
         // if the graph is empty, there will be nothing to remove
         if (graph.isEmpty()){
-            System.out.println("LOG: Nothing to remove; graph is empty");
+//            System.out.println("LOG: Nothing to remove; graph is empty");
             return false;
         }
 
@@ -45,60 +45,79 @@ public class DiWeGraph implements Graph {
         // if null, it does not exist in the graph so we cannot remove a value that does not exist.
         // otherwise, it does exist in the graph, so we can remove it.
         if (searchVertices(vertex) == null){
-            System.out.println("LOG: Vertex you are trying to remove does not exist in graph");
+//            System.out.println("LOG: Vertex you are trying to remove does not exist in graph");
             return false;
         } else {
             // check all other vertices connections. if it has a connection to the vertex that should be removed,
             // remove this connection.
-            for (LinkedList<Node> node : graph){
-                if (node.contains(vertex) && node.getFirst() != vertex){
-                    node.remove(vertex);
+            for (Node<T> node : graph){
+//                if (node.getEdgeList().contains(vertex) && node.getFirst() != vertex){
+//                    node.remove(vertex);
+//                }
+                // for each node in the graph, search its edge linked list.
+                // if the vertex we want to remove is in this list (targetSink),
+                // we want to REMOVE this connection, because the vertex we are deleting will
+                // no longer be in the graph.
+                Edge edgeToCheck = searchEdges(node.getEdgeList(), vertex);
+                if (edgeToCheck != null){
+                    node.getEdgeList().remove(edgeToCheck);
                 }
             }
 
             graph.remove(searchVertices(vertex)); // remove the vertex itself
-            System.out.println("LOG: Successfully removed vertex " + vertex.getValue() + " from the graph.");
+//            System.out.println("LOG: Successfully removed vertex " + vertex.getValue() + " from the graph.");
             return true;
         }
     }
 
     @Override
-    public boolean addEdge(Node source, Node sink, int weight) {
-        // TODO: Izzy
-        return false;
+    public boolean addEdge(Node<T> source, Node<T> sink, int weight) {
+        Edge<T> newEdge = new Edge<>(weight, source, sink);
+
+        // we don't want to add an edge if the source already has a connection to the sink
+        if (searchEdges(source.getEdgeList(), sink) != null){
+//            System.out.println("LOG: Was unable to add edge with source " + source.getValue() + " to sink " + sink.getValue()
+//                    + " with weight " + weight + " because it already exists in the graph.");
+            return false;
+        } else {
+            source.getEdgeList().add(newEdge);
+//            System.out.println("LOG: Adding new edge with source " + source.getValue() + " to sink " + sink.getValue()
+//                    + " with weight " + weight);
+        }
+        return true;
     }
 
     @Override
-    public boolean removeEdge(Node source, Node sink) {
+    public boolean removeEdge(Node<T> source, Node<T> sink) {
         // Removes the edge between source and sink.
-        if (searchVertices(source) != null && searchVertices(sink) != null && searchVertices(source).contains(sink)){
-            return searchVertices(source).remove(sink);
+        if (source.getEdgeList() != null && sink.getEdgeList() != null && searchEdges(source.getEdgeList(), sink) != null){
+            source.getEdgeList().remove(searchEdges(source.getEdgeList(), sink));
+            return true;
         }
         return false;
     }
 
     @Override
-    public LinkedList<Node> searchVertices(Node target) {
+    public Node<T> searchVertices(Node<T> target) {
         // search through array list to see if vertex exists.
         // if it exists, return the vertex as a linked list (including its connections)
-        for (LinkedList<Node> vertex : graph){
-            if (vertex.getFirst().getValue() == target.getValue()){
+        for (Node<T> vertex : graph){
+            if (vertex.getValue() == target.getValue()){
                 return vertex;
             }
         }
 
-        // if that connection does not exist, return null
+        // if that vertex does not exist, return null
         return null;
     }
 
     @Override
     public void printGraph() {
-        // TODO: Landon
         System.out.println("===PRINTING GRAPH===");
-        for (LinkedList<Node> vertex : graph){
-            System.out.println("Vertex " + vertex.getFirst().getValue());
-            for (Node node : edges){
-                System.out.println("    -> " + node.getEdge().getSink());
+        for (Node<T> vertex : graph){
+            System.out.println("Vertex " + vertex.getValue());
+            for (Edge<T> edge : vertex.getEdgeList()){
+                System.out.println("    -> " + edge.getSink().getValue());
             }
         }
     }
@@ -106,30 +125,31 @@ public class DiWeGraph implements Graph {
     @Override
     public void printVertices() {
         System.out.println("===PRINTING ALL VERTICES===");
-        for (LinkedList<Node> vertex : graph){
-            System.out.println("Vertex " + vertex.getFirst().getValue());
+        for (Node<T> vertex : graph){
+            System.out.println("Vertex " + vertex.getValue());
         }
     }
 
     @Override
-    public void printEdges(Node u) {
-        // TODO: Landon
+    public void printEdges(Node<T> u) {
         if(searchVertices(u) == null){
             System.out.println("Vertex " + u.getValue() + " does not exist in graph");
         }
         else{
             System.out.println("Vertex " + u.getValue() + " has the following connections:");
-            for (Node node : edges){
-                System.out.println("    -> " + node.getEdge().getSink());
+            for (Edge<T> edge : u.getEdgeList()){
+                System.out.println("    -> " + edge.getSink().getValue() + " (" + edge.getWeight() + ") ");
             }
-
-
         }
     }
 
     @Override
-    public Node searchConnections(LinkedList listToSearch, Node target) {
-        // TODO: Izzy
-        return null;
+    public Edge<T> searchEdges(LinkedList<Edge<T>> edgesToSearch, Node<T> targetSink){
+        for (Edge<T> edge : edgesToSearch){
+            if (edge.getSink() == targetSink){
+                return edge; // edge exists
+            }
+        }
+        return null; // edge does not exist
     }
 }

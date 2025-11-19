@@ -2,16 +2,16 @@ import java.util.List;
 import java.util.LinkedList;
 
 public interface Graph<T> {
-    boolean addVertex(Node vertex);
-    boolean removeVertex(Node vertex);
+    boolean addVertex(Node<T> vertex);
+    boolean removeVertex(Node<T> vertex);
 
-    boolean addEdge(Node source, Node sink, int weight);
-    boolean removeEdge(Node source, Node sink);
+    boolean addEdge(Node<T> source, Node<T> sink, int weight);
+    boolean removeEdge(Node<T> source, Node<T> sink);
 
-    Node searchConnections(LinkedList<Node> listToSearch, Node target);
-    LinkedList<Node> searchVertices(Node target);
+    Node<T> searchVertices(Node<T> target);
+    Edge<T> searchEdges(LinkedList<Edge<T>> edgesToSearch, Node<T> targetSink);
 
     void printGraph();
     void printVertices();
-    void printEdges(Node u);
+    void printEdges(Node<T> u);
 }
