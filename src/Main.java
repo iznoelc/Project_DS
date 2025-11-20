@@ -5,15 +5,15 @@ public class Main {
         //Note: it is predictable/will produce same random results as long as it has the same seed
         //change seed or bitNum = change results
         BlumBlumShub BBS = new BlumBlumShub();
-        BBS.setUp(11, 19, 3);
+        BBS.setUp(11, 19, -2);
 
         //make graph
         Graph<Integer> test = new DiWeGraph<>();
 
         //make nodes
-        Node<Integer> node1 = new Node<>(BBS.nextByte(5));
-        Node<Integer> node2 = new Node<>(BBS.nextByte(5));
-        Node<Integer> node3 = new Node<>(BBS.nextByte(5));
+        Node<Integer> node1 = new Node<>(BBS.nextByte(8));
+        Node<Integer> node2 = new Node<>(BBS.nextByte(8));
+        Node<Integer> node3 = new Node<>(BBS.nextByte(8));
 
         //make vertices
         test.addVertex(node1);

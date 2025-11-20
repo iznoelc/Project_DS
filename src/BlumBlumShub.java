@@ -1,5 +1,9 @@
 import java.awt.*;
 import java.math.BigInteger;
+import java.util.Scanner;
+
+//NOTE TO SELF!!!
+//make default seeds p and q so that it tells user input is wrong and asks if they want to use default or try again
 
 public class BlumBlumShub {
     //range made by p and q
@@ -42,13 +46,18 @@ public class BlumBlumShub {
 
 
     public void setUp(int p, int q, int seed){
+        System.out.println("Checking p and q validity...");
         //check p and q are prime and congruent to 3%4 for randomness
         if(isPrime(p) && isPrime(q) && p % 4 == 3 && q % 4 == 3){
+            System.out.println("Variables p and q are valid! Setting values now in the system...");
             this.range = p*q;
             //check seed is coprime to q and p (not divisible by them)
+            System.out.println("Checking seed validity...");
             if(isCoprime(seed,p) && isCoprime(seed,q)){
+                System.out.println("Seed is valid! Setting seed value now...");
                 this.seed = seed;
                 this.current_state = seed;
+                return;
             } else {
                 System.out.println("ERROR: Invalid seed Input");
             }
@@ -56,6 +65,10 @@ public class BlumBlumShub {
         } else {
             System.out.println("ERROR: Invalid p or q Input");
         }
+
+       // Scanner scanner = new Scanner();//Fix later
+        System.out.println("Would you like to use defaults or try the set up again?");
+        //if yes set, if no run the program again until setup has been completed
     }
 
     //deals with
