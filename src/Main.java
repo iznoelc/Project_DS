@@ -22,6 +22,7 @@ public class Main {
 
         //make edges
         test.addEdge(node1, node2, 125);
+        test.addEdge(node1, node2, 125); //try to make same edge to show it won't work
         test.addEdge(node1, node3, 100);
         test.addEdge(node2, node3, 150);
         test.addEdge(node3, node2, 150);
@@ -31,23 +32,14 @@ public class Main {
         test.printGraph();
         System.out.println("===");
 
-        // try to add the same edge
-        test.addEdge(node1, node2, 125);
-
-        // print to make sure it wasnt able to do so
-        test.printEdges(node1);
-
-        // try removing edge from 5 to 6
+        //remove some edges
         test.removeEdge(node1, node2);
+        //remove some vertex
+        test.removeVertex(node2);
 
-        // check to make sure removed the edge from 5 to 6
-        test.printEdges(node1);
-
-
-//        // try removing vertex 2
-//        test.removeVertex(node2);
-//
-//        // ensure vertex 2 was successfully removed from its connection to 5
-//        test.printEdges(node1);
+        // print graph
+        System.out.println("===");
+        test.printGraph();
+        System.out.println("===");
     }
 }
