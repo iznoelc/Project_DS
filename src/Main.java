@@ -46,18 +46,19 @@ public class Main {
                     main.generateGraph(extra);
                     break;
                 case 2:
-                    System.out.println("Put checking path here");
+                    System.out.println("Checking graph for path...");
                     break;
                 case 3:
-                    System.out.println("Put checking cycle here");
+                    System.out.println("Checking graph for cycle...");
                     break;
                 case 4:
-                    System.out.println("doing something i dont remember");
+                    System.out.println("Exporting graph...");
                     break;
                 case 5:
+                    System.out.println("Exiting Program...");
                     return;
                 default:
-                    System.out.println("Sorry I didn't understand that. Please try again.");
+                    System.out.println("Invalid Entry. Please try again.");
             }
         }
 
