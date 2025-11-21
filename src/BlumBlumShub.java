@@ -45,13 +45,27 @@ public class BlumBlumShub {
 
 
 
-    public void setUp(int p, int q, int seed){
+    public void setUp(){
+        //get ready for user input
+        Scanner scanner = new Scanner(System.in);
+
+        //get input
+        System.out.println("What is your p? (must be prime and 3%4 congruent)");
+        int p = scanner.nextInt();
+        System.out.println("What is your q? (must be prime and 3%4 congruent");
+        int q = scanner.nextInt();
+
+        //check validity
         System.out.println("Checking p and q validity...");
-        //check p and q are prime and congruent to 3%4 for randomness
         if(isPrime(p) && isPrime(q) && p % 4 == 3 && q % 4 == 3){
-            System.out.println("Variables p and q are valid! Setting values now in the system...");
+            System.out.println("Variables p and q are valid! Setting values now in the system...\n\n");
             this.range = p*q;
-            //check seed is coprime to q and p (not divisible by them)
+
+            //if valid continue on to next user input
+            System.out.println("What is your seed? (must be coprime of p and q)");
+            int seed = scanner.nextInt();
+
+            //check seed validity
             System.out.println("Checking seed validity...");
             if(isCoprime(seed,p) && isCoprime(seed,q)){
                 System.out.println("Seed is valid! Setting seed value now...");
@@ -66,9 +80,23 @@ public class BlumBlumShub {
             System.out.println("ERROR: Invalid p or q Input");
         }
 
-       // Scanner scanner = new Scanner();//Fix later
-        System.out.println("Would you like to use defaults or try the set up again?");
-        //if yes set, if no run the program again until setup has been completed
+        //if invalid ask eitehr to set default or run recursively
+        System.out.println("Uh oh seems there's been an issue. Would you like to:\n" +
+                "1. use defaults \n" +
+                "2. try again\n");
+        int input = scanner.nextInt();
+        switch (input){
+            case 1:
+                this.range = 11*19;
+                this.seed = 3;
+                this.current_state = seed;
+                break;
+            case 2:
+                this.setUp();
+                break;
+            default:
+                System.out.println("I'm sorry I don't recognize that input. Please choose option 1 or 2.");
+        }
     }
 
     //deals with
