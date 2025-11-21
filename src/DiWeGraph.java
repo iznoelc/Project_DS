@@ -153,5 +153,9 @@ public class DiWeGraph<T> implements Graph<T> {
         return null; // edge does not exist
     }
 
+    @Override
     public List<Node<T>> getGraph(){return this.graph;}
+
+    @Override
+    public int getNumNodes(){ return graph.size(); }
 }

@@ -14,4 +14,8 @@ public interface Graph<T> {
     void printGraph();
     void printVertices();
     void printEdges(Node<T> u);
+
+    List<Node<T>> getGraph();
+    int getNumNodes();
+
 }
