@@ -39,6 +39,39 @@ public class FileHandler<T> {
         return true;
     }
 
+    public boolean exportCycle(Cycle<Integer> cycle) throws IOException {
+        File myFile = new File("cycle."+"graphName"+".txt");
+        String path = System.getProperty("user.dir") + "\\src\\cycle." + "graphName" +".txt";
+        if (myFile.createNewFile()) {
+            System.out.println("File created: " + myFile.getName());
+        }
+        else {
+            System.out.println("File already exists.");
+            return false;
+        }
+
+        String text = "";
+        text.join("===PRINTING CYCLE===\n");
+        if (cycle != null){
+            text.join("Cycle found: ");
+            for (Node cycleNode : cycle.getCycle()){
+                text.join(cycleNode.getValue() + " -> ");
+            }
+            text.join(cycle.getCycle().getFirst().getValue().toString());
+        } else {
+            System.out.println("No cycle found.");
+            return false;
+        }
+
+        try {
+            Files.write(Paths.get(path), text.getBytes(), StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            return false;
+        }
+
+        return true;
+    }
+
 }
 
 

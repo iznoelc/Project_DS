@@ -102,7 +102,7 @@ public class DirectedCycle<T> implements Cycle<T> {
         }
     }
 
-//    @Override
-//    public ArrayList<Node<T>> getCycle(){ return this.cycle; }
+    @Override
+    public ArrayList<Node<T>> getCycle(){ return this.cycle; }
 
 }

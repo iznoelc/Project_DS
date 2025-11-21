@@ -6,6 +6,6 @@ public interface Cycle<T> {
     ArrayList<Node<T>> findCycle(Graph<T> graph);
     void printCycle();
 
-    //ArrayList<Node<T>> getCycle();
+    ArrayList<Node<T>> getCycle();
 
 }
