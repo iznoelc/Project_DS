@@ -7,6 +7,17 @@ import java.io.IOException;
 
 public class FileHandler<T> {
 
+
+    /**
+     * Takes a graph as an input and creates a text file
+     * in the source folder of the graph.
+     *
+     * Text file name follows the scheme of graph.graphName.txt
+     *
+     * @param graph
+     * @return boolean
+     * @throws IOException
+     */
     public boolean exportGraph(DiWeGraph<Integer> graph) throws IOException {
         File myFile = new File("graph."+"graphName"+".txt");
         String path = System.getProperty("user.dir") + "\\src\\graph." + "graphName" +".txt";
@@ -38,6 +49,17 @@ public class FileHandler<T> {
 
         return true;
     }
+
+    /**
+     * Takes a cycle as an input and creates a text file
+     * in the source folder of the cycle.
+     *
+     * Text file name follows the scheme of cycle.cycleName.txt
+     *
+     * @param cycle
+     * @return boolean
+     * @throws IOException
+     */
 
     public boolean exportCycle(Cycle<Integer> cycle) throws IOException {
         File myFile = new File("cycle."+"graphName"+".txt");
