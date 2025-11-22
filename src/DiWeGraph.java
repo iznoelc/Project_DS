@@ -120,6 +120,11 @@ public class DiWeGraph<T> implements Graph<T> {
      * Find and print a path from a source node to a sink node using a BFS algorithm.
      * IMPORTANT NOTE: CANNOT find cycles. If trying to find a cycle path (i.e. from Node 1 to Node 1)
      * use Cycle class and functionality instead.
+     *
+     * Source: GeeksForGeeks
+     * <a href="https://www.geeksforgeeks.org/dsa/find-if-there-is-a-path-between-two-vertices-in-a-given-graph/">...</a>
+     * <a href="https://www.geeksforgeeks.org/dsa/print-paths-given-source-destination-using-bfs/">...</a>
+     *
      * @param source origin of the path
      * @param sink destination of the path
      * @return the path found
