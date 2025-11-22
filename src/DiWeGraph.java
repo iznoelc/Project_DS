@@ -1,6 +1,7 @@
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Queue;
 
 /**
  * A class intended to represent a directed, weighted graph
@@ -12,6 +13,10 @@ public class DiWeGraph<T> implements Graph<T> {
         this.graph = new ArrayList<>();
     }
 
+    /**
+     * @param vertex to be added to the graph
+     * @return success of the operation
+     */
     @Override
     public boolean addVertex(Node<T> vertex) {
         // return false if value already exists in graph (no duplicates!)
@@ -25,14 +30,17 @@ public class DiWeGraph<T> implements Graph<T> {
             }
         }
 
-        //LinkedList<Node<T>> newVertex = new LinkedList<>(); // create a new linked list to store desired value in
-        //newVertex.add(vertex); // add desired value to start of linked list
-        graph.add(vertex); // add new linked list (vertex) to the graph
+        graph.add(vertex);
 
 //        System.out.println("LOG: Successfully added " + vertex.getValue() + " to graph.");
         return true;
     }
 
+    /**
+     * Remove a vertex from the graph; ensure all connections attached to vertex are also removed.
+     * @param vertex to be removed from the graph
+     * @return success of the operation
+     */
     @Override
     public boolean removeVertex(Node<T> vertex) {
         // if the graph is empty, there will be nothing to remove
@@ -51,9 +59,6 @@ public class DiWeGraph<T> implements Graph<T> {
             // check all other vertices connections. if it has a connection to the vertex that should be removed,
             // remove this connection.
             for (Node<T> node : graph){
-//                if (node.getEdgeList().contains(vertex) && node.getFirst() != vertex){
-//                    node.remove(vertex);
-//                }
                 // for each node in the graph, search its edge linked list.
                 // if the vertex we want to remove is in this list (targetSink),
                 // we want to REMOVE this connection, because the vertex we are deleting will
@@ -70,6 +75,14 @@ public class DiWeGraph<T> implements Graph<T> {
         }
     }
 
+    /**
+     * Add an edge to the graph; ensure an edge from the source to sink doesn't already exist, even
+     * if it has the same weight in order to avoid multigraph.
+     * @param source origin of the edge
+     * @param sink destination of the edge
+     * @param weight of the edge
+     * @return success of the operation
+     */
     @Override
     public boolean addEdge(Node<T> source, Node<T> sink, int weight) {
         Edge<T> newEdge = new Edge<>(weight, source, sink);
@@ -87,6 +100,12 @@ public class DiWeGraph<T> implements Graph<T> {
         return true;
     }
 
+    /**
+     * Remove an edge from the graph; ensures edge exists first.
+     * @param source origin of the edge
+     * @param sink destination of the edge
+     * @return success of the operation
+     */
     @Override
     public boolean removeEdge(Node<T> source, Node<T> sink) {
         // Removes the edge between source and sink.
@@ -97,6 +116,72 @@ public class DiWeGraph<T> implements Graph<T> {
         return false;
     }
 
+    /**
+     * Find and print a path from a source node to a sink node using a BFS algorithm.
+     * IMPORTANT NOTE: CANNOT find cycles. If trying to find a cycle path (i.e. from Node 1 to Node 1)
+     * use Cycle class and functionality instead.
+     * @param source origin of the path
+     * @param sink destination of the path
+     * @return the path found
+     */
+    public Path<T> findPath(Node<T> source, Node<T> sink){
+        int n = this.graph.size();
+
+        // keep track of visited vertices
+        ArrayList<Node<T>> vis = new ArrayList<>();
+
+        Queue<Node<T>> q = new LinkedList<>();
+        Queue<Path<T>> pathQueue = new LinkedList<>();
+
+        // mark the source node as visited and enqueue it
+        vis.add(source);
+        q.add(source);
+        Path<T> initialPath = new Path<>();
+        initialPath.getPath().add(source);
+        pathQueue.add(initialPath);
+
+        while (!q.isEmpty() && !pathQueue.isEmpty()){
+            Node<T> curr = q.poll();
+            Path<T> currPath = pathQueue.poll();
+
+            // if current vertex is the destination, return true
+            if (curr == sink && currPath.getPath().size() > 1){
+                // initial path cost from first node to second node in the path gets skipped,
+                // ensure it's added.
+                currPath.setPathCost(currPath.getPathCost() +
+                        currPath.getPath().getFirst().getEdgeList().getFirst().getWeight());
+                return currPath;
+            }
+
+            for (int i = 0; i < curr.getEdgeList().size(); i++){
+                Node<T> nextVertex = curr.getEdgeList().get(i).getSink();
+
+                // if next vertex has not been visited
+                if (!vis.contains(nextVertex)){
+                    // mark it as visited and enqueue it
+                    vis.add(nextVertex);
+                    q.add(nextVertex);
+                    Path<T> newPath = new Path<>();
+                    assert currPath != null;
+                    newPath.getPath().addAll(currPath.getPath());
+                    newPath.setPathCost(currPath.getPathCost());
+
+                    newPath.addToPath(nextVertex, curr.getEdgeList().get(i).getWeight());
+                    pathQueue.add(newPath);
+                }
+            }
+        }
+
+        // bfs complete without reaching sink node, no path. return false.
+        System.out.println("Path from " + source.getValue() + " to " + sink.getValue() + " does not exist.");
+        return null;
+    }
+
+    /**
+     * Helper function to search the vertices of a graph to see if the target vertex exists.
+     * @param target vertex to find
+     * @return vertex if found, null if not found
+     */
     @Override
     public Node<T> searchVertices(Node<T> target) {
         // search through array list to see if vertex exists.
@@ -111,6 +196,9 @@ public class DiWeGraph<T> implements Graph<T> {
         return null;
     }
 
+    /**
+     * Print the entire graph and its edges (excluding weights)
+     */
     @Override
     public void printGraph() {
         System.out.println("===PRINTING GRAPH===");
@@ -122,6 +210,9 @@ public class DiWeGraph<T> implements Graph<T> {
         }
     }
 
+    /**
+     * Print all vertices of the graph.
+     */
     @Override
     public void printVertices() {
         System.out.println("===PRINTING ALL VERTICES===");
@@ -130,6 +221,11 @@ public class DiWeGraph<T> implements Graph<T> {
         }
     }
 
+    /**
+     * Print all edges of a specified node u. Print weights alongside each edge.
+     * Format: Node (weight from u to Node) -> ...
+     * @param u node to print edges of
+     */
     @Override
     public void printEdges(Node<T> u) {
         if(searchVertices(u) == null){
@@ -143,6 +239,12 @@ public class DiWeGraph<T> implements Graph<T> {
         }
     }
 
+    /**
+     * Helper function to search for a target node inside a source node's edge list.
+     * @param edgesToSearch source node we are searching the edge list of
+     * @param targetSink node that we want to find a connection to
+     * @return edge from source to sink if connection exists, null if not
+     */
     @Override
     public Edge<T> searchEdges(LinkedList<Edge<T>> edgesToSearch, Node<T> targetSink){
         for (Edge<T> edge : edgesToSearch){
@@ -153,9 +255,15 @@ public class DiWeGraph<T> implements Graph<T> {
         return null; // edge does not exist
     }
 
+    /**
+     * @return this graph
+     */
     @Override
-    public List<Node<T>> getGraph(){return this.graph;}
+    public List<Node<T>> getGraph(){ return this.graph; }
 
+    /**
+     * @return number of nodes in this graph
+     */
     @Override
     public int getNumNodes(){ return graph.size(); }
 }
