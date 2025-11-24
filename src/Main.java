@@ -1,12 +1,13 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    public void generateGraph(int extraRand){
+    public DiWeGraph<Integer> generateGraph(int extraRand){
         System.out.println("Generating a Random BlumBlumShub Graph...");
         BlumBlumShub BBS = new BlumBlumShub();
         BBS.setUp();
         //make graph
-        Graph<Integer> graph = new DiWeGraph<>();
+        DiWeGraph<Integer> graph = new DiWeGraph<>();
         //make nodes
         Node<Integer> node1 = new Node<>(BBS.nextByte(2+extraRand));
         Node<Integer> node2 = new Node<>(BBS.nextByte(1+extraRand));
@@ -28,22 +29,31 @@ public class Main {
         System.out.println("\n==============================================================");
         graph.printGraph();
         System.out.println("================================================================\n");
+        return graph;
     }
 
     public static void main(String[] args){
         Main main = new Main();
+        Path path = new Path();
+        Cycle cycle = null;
+        FileHandler file = new FileHandler();
+        DiWeGraph<Integer> graph = null;
+
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
+        System.out.println("Lets start by making a random graph!");
+        graph = main.generateGraph(1);
+
         while(running==true){
-            System.out.println("\nWould you like to: \n1. make a graph\n2. check a path\n3. check a cycle\n4.?\n5. exit the program");
+            System.out.println("\nWould you like to: \n1. make a new graph\n2. get a path from graph\n3. get a cycle from graph\n4. exit this program");
             int input = scanner.nextInt();
 
             switch (input){
                 case 1:
                     System.out.println("Please give me a number just to make the graph extra random.");
                     int extra = scanner.nextInt();
-                    main.generateGraph(extra);
+                    graph = main.generateGraph(extra);
                     break;
                 case 2:
                     System.out.println("Checking graph for path...");
@@ -51,10 +61,7 @@ public class Main {
                 case 3:
                     System.out.println("Checking graph for cycle...");
                     break;
-                case 4:
-                    System.out.println("Exporting graph...");
-                    break;
-                case 5:
+                case 6:
                     System.out.println("Exiting Program...");
                     return;
                 default:
