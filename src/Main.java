@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -5,43 +6,55 @@ import java.util.Scanner;
 import static java.lang.Math.random;
 
 public class Main {
-    public DiWeGraph<Integer> generateGraph(){
+    private static final int MAX_NODES = 15;
+    private static final int MIN_NODES = 3;
+
+    public DiWeGraph<Integer> generateGraph(int extraRand){
         System.out.println("Generating a Random BlumBlumShub Graph...");
         BlumBlumShub BBS = new BlumBlumShub();
         ArrayList<Integer> nodes = new ArrayList<Integer>();
         Random random = new Random();
-        int max = 15;
-        int min = 3;
-        Integer node_num = random.nextInt(max-min+1)+min;
+
+        int node_num = random.nextInt(MAX_NODES - MIN_NODES + 1)+ MIN_NODES;
+        int nodeCount = node_num;
         System.out.println("node num = " + node_num);
+
         BBS.setUp();
         //make graph
         DiWeGraph<Integer> graph = new DiWeGraph<>();
         //make nodes
 
-        while(node_num>0){
-            //System.out.println(extraRand);
-            Integer next = BBS.nextByte();
-            graph.addVertex(new Node<Integer>(next));
-            nodes.add(next);
-            node_num-=1;
+        nodes = BBS.buffer(node_num, extraRand);
+
+        for(Integer node : nodes){
+            System.out.println("Node " + node);
+            graph.addVertex(new Node<Integer>(node));
+            nodeCount-=1;
         }
+
+        graph.printGraph();
         //make vertices
-        for(Integer vertex: nodes){
-            Node<Integer> node = graph.findInputInGraph(vertex);
-            graph.addVertex(node);
-        }
+//        for(Integer vertex : nodes){
+//            Node<Integer> node = graph.findInputInGraph(vertex);
+//            graph.addVertex(node);
+//        }
         //make edges
         int Max = nodes.size() - 1;
-        int edge_num = min;
+        int edge_num = MIN_NODES;
 
-        for(int edge = 0;edge < edge_num;edge++){
-            Integer n1 = nodes.get(random.nextInt(max-min+1)+min);
-            Node node1 = graph.findInputInGraph(n1);
-            Integer n2 = nodes.get(random.nextInt(max-min+1)+min);
-            Node node2 = graph.findInputInGraph(n2);
-            graph.addEdge(node1,node2,BBS.nextByte());
+        for (Node<Integer> vertex : graph.getGraph()){
+            for(int edge = 0; edge < MIN_NODES; edge++){
+                int randomNum = (random.nextInt(node_num - MIN_NODES + 1) + MIN_NODES)-1;            System.out.println("Random num: " + randomNum);
+                System.out.println("Random num: " + randomNum);
+
+                Integer n1 = nodes.get(randomNum);
+                Node<Integer> node1 = graph.findInputInGraph(n1);
+                Integer n2 = nodes.get((random.nextInt(node_num - MIN_NODES + 1) + MIN_NODES) - 1);
+                Node<Integer> node2 = graph.findInputInGraph(n2);
+                graph.addEdge(node1,node2,BBS.nextByte(extraRand));
+            }
         }
+
         // print graph
         System.out.println("\n==============================================================");
         graph.printGraph();
@@ -49,29 +62,36 @@ public class Main {
         return graph;
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
         Main main = new Main();
-        FileHandler file = new FileHandler();
+        FileHandler<Integer> file = new FileHandler<>();
         DiWeGraph<Integer> graph = null;
+        String graphFileName;
 
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
         System.out.println("Lets start by making a random graph!");
-        graph = main.generateGraph();
+        graph = main.generateGraph(11);
 
         Integer number = 0;
-        Node nodenumber = new Node<Integer>(number);
+        Node<Integer> nodenumber = new Node<Integer>(number);
 
-        while(running==true){
+        while(running == true){
             System.out.println("\nWould you like to: \n1. make a new graph\n2. get a path from graph\n3. get a cycle from graph\n4. exit this program");
             int input = scanner.nextInt();
 
             switch (input){
                 case 1:
+                    System.out.println("Exporting graph...");
+                    System.out.println("What do you want to call your file? (Cannot overwrite so pick a new name if you already exported a graph): ");
+                    graphFileName = scanner.next();
+                    Cycle<Integer> cycle = new DirectedCycle<>();
+                    cycle.findCycle(graph);
+                    file.exportGraph(graphFileName, graph, cycle);
                     System.out.println("Please give me a number just to make the graph extra random.");
                     int extra = scanner.nextInt();
-                    graph = main.generateGraph();
+                    graph = main.generateGraph(extra);
                     break;
                 case 2:
                     System.out.println("Start of Path? Number please.");
@@ -88,9 +108,9 @@ public class Main {
                     break;
                 case 3:
                     System.out.println("Checking graph for cycle...");
-                    Cycle cycle = new DirectedCycle();
-                    cycle.findCycle(graph);
-                    cycle.printCycle();
+                    Cycle<Integer> cyclePrint = new DirectedCycle<>();
+                    cyclePrint.findCycle(graph);
+                    cyclePrint.printCycle();
                     break;
                 case 4:
                     System.out.println("Exiting Program...");

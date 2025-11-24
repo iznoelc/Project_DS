@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.math.BigInteger;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 //NOTE TO SELF!!!
 //make default seeds p and q so that it tells user input is wrong and asks if they want to use default or try again
@@ -44,8 +45,8 @@ public class BlumBlumShub {
     }
 
     public void defaultSetup(){
-        this.range = 3*3;
-        this.seed = 4;
+        this.range = 499*547;
+        this.seed = 12345;
     }
 
     public void setUp(){
@@ -53,9 +54,9 @@ public class BlumBlumShub {
         Scanner scanner = new Scanner(System.in);
 
         //get input
-        System.out.println("What is your p? (must be prime and 3%4 congruent)");
+        System.out.println("What is your p? (must be prime and 3%4 congruent, big numbers work better like 499 and 547)");
         int p = scanner.nextInt();
-        System.out.println("What is your q? (must be prime and 3%4 congruent");
+        System.out.println("What is your q? (must be prime and 3%4 congruent, big numbers work better like 499 and 547)");
         int q = scanner.nextInt();
 
         //check validity
@@ -65,7 +66,7 @@ public class BlumBlumShub {
             this.range = p*q;
 
             //if valid continue on to next user input
-            System.out.println("What is your seed? (must be coprime of p and q)");
+            System.out.println("What is your seed? (must be coprime of p and q, big numbers work better, like 12345)");
             int seed = scanner.nextInt();
 
             //check seed validity
@@ -90,8 +91,8 @@ public class BlumBlumShub {
         int input = scanner.nextInt();
         switch (input){
             case 1:
-                this.range = 7*11;
-                this.seed = 17;
+                this.range = 499*547;
+                this.seed = 12345;
                 this.current_state = seed;
                 break;
             case 2:
@@ -115,19 +116,19 @@ public class BlumBlumShub {
     }
 
     //loops 8 times, either advances one or takes a random bit
-    public int nextByte() {
+    public int nextByte(int bitNum) {
         int b = 0;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < bitNum; i++) {
             b = (b << 1) | nextBit();
         }
         return b;
     }
 
     //generates arrays of bytes
-    public byte[] buffer(int size) {
-        byte[] buf = new byte[size];
+    public ArrayList<Integer> buffer(int size, int bitNum) {
+        ArrayList<Integer> buf = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            buf[i] = (byte) nextByte();
+            buf.add(nextByte(bitNum));
         }
         return buf;
     }

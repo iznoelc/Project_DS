@@ -24,7 +24,7 @@ public class DiWeGraph<T> implements Graph<T> {
         // we can automatically skip while loop logic if the graph is empty because then there will obviously
         // not be a duplicate
         if(!graph.isEmpty()){
-            if (searchVertices(vertex) != null){
+            if (findInputInGraph(vertex.getValue()) != null){
                 System.out.println("LOG: Could not add " + vertex.getValue() + " to the graph because it already exists!");
                 return false;
             }
@@ -312,4 +312,5 @@ public class DiWeGraph<T> implements Graph<T> {
 
         return null;
     }
+
 }

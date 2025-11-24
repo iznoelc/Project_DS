@@ -19,9 +19,9 @@ public class FileHandler<T> {
      * @return boolean
      * @throws IOException
      */
-    public boolean exportGraph(DiWeGraph<T> graph) throws IOException {
-        File myFile = new File("src//" + "graph."+"graphName"+".txt");
-        String path = System.getProperty("user.dir") + "\\src\\graph." + "graphName" +".txt";
+    public boolean exportGraph(String fileName, DiWeGraph<T> graph, Cycle<T> cycle) throws IOException {
+        File myFile = new File("src//" + "graph." + fileName + ".txt");
+        String path = System.getProperty("user.dir") + "\\src\\graph." + fileName + ".txt";
         if (myFile.createNewFile()) {
             System.out.println("File created: " + myFile.getName());
         }
@@ -40,39 +40,7 @@ public class FileHandler<T> {
             text.append("\n");
         }
 
-        try {
-            Files.writeString(Paths.get(path), text.toString(), StandardOpenOption.APPEND);
-            System.out.println("Cycle exported to file.");
-        } catch (IOException e) {
-            System.out.println("Error writing to file.");
-        }
-
-        return true;
-    }
-
-    /**
-     * Takes a cycle as an input and creates a text file
-     * in the source folder of the cycle.
-     *
-     * Text file name follows the scheme of cycle.cycleName.txt
-     *
-     * @param cycle
-     * @return boolean
-     * @throws IOException
-     */
-
-    public boolean exportCycle(Cycle<T> cycle) throws IOException {
-        File myFile = new File("src//" + "cycle."+"graphName"+".txt");
-        String path = System.getProperty("user.dir") + "\\src\\cycle." + "graphName" +".txt";
-        if (myFile.createNewFile()) {
-            System.out.println("File created: " + myFile.getName());
-        }
-        else {
-            System.out.println("File already exists.");
-            return false;
-        }
-
-        StringBuilder text = new StringBuilder();
+        //StringBuilder text = new StringBuilder();
         text.append("===PRINTING CYCLE===\n");
         if (cycle != null){
             text.append("Cycle found: ");
@@ -91,13 +59,10 @@ public class FileHandler<T> {
             System.out.println("Cycle exported to file.");
         } catch (IOException e) {
             System.out.println("Error writing to file.");
-            return false;
         }
 
         return true;
     }
-
-
 }
 
 
