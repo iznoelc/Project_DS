@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -54,11 +53,14 @@ public class Main {
                     graph = main.generateGraph(extra);
                     break;
                 case 2:
-                    System.out.println("Start of Path?");
-                    String start = scanner.next();
-                    System.out.println("End of Path?");
+                    System.out.println("Start of Path? Number please.");
+                    Integer start = scanner.nextInt();
+                    Node<Integer> start_node = graph.findInputInGraph(start);
+                    System.out.println("End of Path? Number please.");
+                    Integer end = scanner.nextInt();
+                    Node<Integer> end_node = graph.findInputInGraph(end);
                     System.out.println("Checking graph for path...");
-                    Path<Integer> path = graph.findPath(node1, node1); //going to be using helper class once made to fix
+                    Path<Integer> path = graph.findPath(start_node, end_node); //going to be using helper class once made to fix
                     if (path != null){
                         path.printPath();
                     }
@@ -69,7 +71,7 @@ public class Main {
                     cycle.findCycle(graph);
                     cycle.printCycle();
                     break;
-                case 6:
+                case 4:
                     System.out.println("Exiting Program...");
                     return;
                 default:
