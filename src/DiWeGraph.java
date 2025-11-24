@@ -145,6 +145,15 @@ public class DiWeGraph<T> implements Graph<T> {
         initialPath.getPath().add(source);
         pathQueue.add(initialPath);
 
+        // edge case - node has a path to itself
+        if (source == sink){
+            if(searchEdges(source.getEdgeList(), sink) != null){
+                System.out.println("Node " + source.getValue() + " has a path to itself");
+                initialPath.addToPath(sink, this.searchEdges(source.getEdgeList(), sink).getWeight());
+                return initialPath;
+            }
+        }
+
         while (!q.isEmpty() && !pathQueue.isEmpty()){
             Node<T> curr = q.poll();
             Path<T> currPath = pathQueue.poll();
@@ -160,6 +169,24 @@ public class DiWeGraph<T> implements Graph<T> {
 
             for (int i = 0; i < curr.getEdgeList().size(); i++){
                 Node<T> nextVertex = curr.getEdgeList().get(i).getSink();
+
+                if (source == sink){
+                    if (nextVertex == source){
+                        System.out.println("You are trying to detect a cycle.");
+                        Path<T> newPath = new Path<>();
+                        assert currPath != null;
+
+                        // add lost weight from 1st connection to 2nd connection
+                        currPath.setPathCost(currPath.getPathCost() +
+                                currPath.getPath().getFirst().getEdgeList().getFirst().getWeight());
+
+                        newPath.getPath().addAll(currPath.getPath());
+                        newPath.setPathCost(currPath.getPathCost());
+
+                        newPath.addToPath(nextVertex, curr.getEdgeList().get(i).getWeight());
+                        return newPath;
+                    }
+                }
 
                 // if next vertex has not been visited
                 if (!vis.contains(nextVertex)){
