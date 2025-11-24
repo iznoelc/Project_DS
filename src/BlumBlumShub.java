@@ -43,7 +43,10 @@ public class BlumBlumShub {
         }
     }
 
-
+    public void defaultSetup(){
+        this.range = 3*3;
+        this.seed = 4;
+    }
 
     public void setUp(){
         //get ready for user input
@@ -112,9 +115,9 @@ public class BlumBlumShub {
     }
 
     //loops 8 times, either advances one or takes a random bit
-    public int nextByte(int bitNum) {
+    public int nextByte() {
         int b = 0;
-        for (int i = 0; i < bitNum; i++) {
+        for (int i = 0; i < 3; i++) {
             b = (b << 1) | nextBit();
         }
         return b;
@@ -124,7 +127,7 @@ public class BlumBlumShub {
     public byte[] buffer(int size) {
         byte[] buf = new byte[size];
         for (int i = 0; i < size; i++) {
-            buf[i] = (byte) nextByte(5);
+            buf[i] = (byte) nextByte();
         }
         return buf;
     }
