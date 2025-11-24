@@ -8,6 +8,8 @@ public interface Graph<T> {
     boolean addEdge(Node<T> source, Node<T> sink, int weight);
     boolean removeEdge(Node<T> source, Node<T> sink);
 
+    Path<T> findPath(Node<T> source, Node<T> sink);
+
     Node<T> searchVertices(Node<T> target);
     Edge<T> searchEdges(LinkedList<Edge<T>> edgesToSearch, Node<T> targetSink);
 
@@ -17,5 +19,5 @@ public interface Graph<T> {
 
     List<Node<T>> getGraph();
     int getNumNodes();
-
+    Node<T> findInputInGraph(T input);
 }

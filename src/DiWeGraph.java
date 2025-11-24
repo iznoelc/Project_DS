@@ -126,6 +126,7 @@ public class DiWeGraph<T> implements Graph<T> {
      * @param sink destination of the path
      * @return the path found
      */
+    @Override
     public Path<T> findPath(Node<T> source, Node<T> sink){
         int n = this.graph.size();
 
@@ -295,4 +296,20 @@ public class DiWeGraph<T> implements Graph<T> {
      */
     @Override
     public int getNumNodes(){ return graph.size(); }
+
+    /**
+     * Find user input in the graph.
+     * @param input value to be found in the graph
+     * @return the node in the graph if data is found, null if not found
+     */
+    @Override
+    public Node<T> findInputInGraph(T input){
+        for (Node<T> vertex : this.graph){
+            if (vertex.getValue().equals(input)){
+                return vertex;
+            }
+        }
+
+        return null;
+    }
 }
