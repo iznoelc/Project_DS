@@ -18,7 +18,7 @@ public class FileHandler<T> {
      * @return boolean
      * @throws IOException
      */
-    public boolean exportGraph(DiWeGraph<Integer> graph) throws IOException {
+    public boolean exportGraph(DiWeGraph<T> graph) throws IOException {
         File myFile = new File("graph."+"graphName"+".txt");
         String path = System.getProperty("user.dir") + "\\src\\graph." + "graphName" +".txt";
         if (myFile.createNewFile()) {
@@ -33,9 +33,9 @@ public class FileHandler<T> {
         //Changed node and edge <T> to <Integer> and that seems to have taken away teh errors but idk man, check it
         String text = "";
         text.join("===PRINTING GRAPH===\n");
-        for (Node<Integer> vertex : graph.getGraph()){
+        for (Node<T> vertex : graph.getGraph()){
             text.join("Vertex " + vertex.getValue());
-            for (Edge<Integer> edge : vertex.getEdgeList()){
+            for (Edge<T> edge : vertex.getEdgeList()){
                 text.join("    -> " + edge.getSink().getValue());
             }
             text.join("\n");
@@ -61,7 +61,7 @@ public class FileHandler<T> {
      * @throws IOException
      */
 
-    public boolean exportCycle(Cycle<Integer> cycle) throws IOException {
+    public boolean exportCycle(Cycle<T> cycle) throws IOException {
         File myFile = new File("cycle."+"graphName"+".txt");
         String path = System.getProperty("user.dir") + "\\src\\cycle." + "graphName" +".txt";
         if (myFile.createNewFile()) {
