@@ -12,42 +12,26 @@ public class Main {
     public DiWeGraph<Integer> generateGraph(int extraRand){
         System.out.println("Generating a Random BlumBlumShub Graph...");
         BlumBlumShub BBS = new BlumBlumShub();
-        ArrayList<Integer> nodes = new ArrayList<Integer>();
+        ArrayList<Integer> nodes;
         Random random = new Random();
 
         int node_num = random.nextInt(MAX_NODES - MIN_NODES + 1)+ MIN_NODES;
         int nodeCount = node_num;
-        System.out.println("node num = " + node_num);
 
         BBS.setUp();
-        //make graph
         DiWeGraph<Integer> graph = new DiWeGraph<>();
-        //make nodes
 
         nodes = BBS.buffer(node_num, extraRand);
 
         for(Integer node : nodes){
             System.out.println("Node " + node);
             graph.addVertex(new Node<Integer>(node));
-            nodeCount-=1;
+            nodeCount -= 1;
         }
-
-        graph.printGraph();
-        //make vertices
-//        for(Integer vertex : nodes){
-//            Node<Integer> node = graph.findInputInGraph(vertex);
-//            graph.addVertex(node);
-//        }
-        //make edges
-        int Max = nodes.size() - 1;
-        int edge_num = MIN_NODES;
 
         for (Node<Integer> vertex : graph.getGraph()){
             for(int edge = 0; edge < MIN_NODES; edge++){
-                int randomNum = (random.nextInt(node_num - MIN_NODES + 1) + MIN_NODES)-1;            System.out.println("Random num: " + randomNum);
-                System.out.println("Random num: " + randomNum);
-
-                Integer n1 = nodes.get(randomNum);
+                Integer n1 = nodes.get((random.nextInt(node_num - MIN_NODES + 1) + MIN_NODES) - 1);
                 Node<Integer> node1 = graph.findInputInGraph(n1);
                 Integer n2 = nodes.get((random.nextInt(node_num - MIN_NODES + 1) + MIN_NODES) - 1);
                 Node<Integer> node2 = graph.findInputInGraph(n2);
