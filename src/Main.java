@@ -34,8 +34,6 @@ public class Main {
 
     public static void main(String[] args){
         Main main = new Main();
-        Path path = new Path();
-        Cycle cycle = null;
         FileHandler file = new FileHandler();
         DiWeGraph<Integer> graph = null;
 
@@ -56,10 +54,20 @@ public class Main {
                     graph = main.generateGraph(extra);
                     break;
                 case 2:
+                    System.out.println("Start of Path?");
+                    String start = scanner.next();
+                    System.out.println("End of Path?");
                     System.out.println("Checking graph for path...");
+                    Path<Integer> path = graph.findPath(node1, node1); //going to be using helper class once made to fix
+                    if (path != null){
+                        path.printPath();
+                    }
                     break;
                 case 3:
                     System.out.println("Checking graph for cycle...");
+                    Cycle cycle = new DirectedCycle();
+                    cycle.findCycle(graph);
+                    cycle.printCycle();
                     break;
                 case 6:
                     System.out.println("Exiting Program...");

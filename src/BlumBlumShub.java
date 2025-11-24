@@ -87,8 +87,8 @@ public class BlumBlumShub {
         int input = scanner.nextInt();
         switch (input){
             case 1:
-                this.range = 11*19;
-                this.seed = 3;
+                this.range = 7*11;
+                this.seed = 17;
                 this.current_state = seed;
                 break;
             case 2:
