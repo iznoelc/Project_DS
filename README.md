@@ -1,5 +1,6 @@
 # Data Structures Project
 Final Project for Data Structures
+
 **TEAM :** Izzy Carlson, Landon Chapin, Esperanza Paulino
 
 # Instructions to run code
