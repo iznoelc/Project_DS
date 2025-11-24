@@ -46,9 +46,6 @@ public class Main {
                     main.generateGraph(extra);
                     break;
                 case 2:
-                    // add a check so that if the user enters a path that is a cycle
-                    // (i.e. i want to find a path from 1 to 1!) try to find a cycle instead, as
-                    // path method does NOT find cycles
                     System.out.println("Checking graph for path...");
                     break;
                 case 3:
