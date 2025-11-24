@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class FileHandler<T> {
 
@@ -19,7 +20,7 @@ public class FileHandler<T> {
      * @throws IOException
      */
     public boolean exportGraph(DiWeGraph<T> graph) throws IOException {
-        File myFile = new File("graph."+"graphName"+".txt");
+        File myFile = new File("src//" + "graph."+"graphName"+".txt");
         String path = System.getProperty("user.dir") + "\\src\\graph." + "graphName" +".txt";
         if (myFile.createNewFile()) {
             System.out.println("File created: " + myFile.getName());
@@ -29,22 +30,21 @@ public class FileHandler<T> {
             return false;
         }
 
-        //NOTE TO LANDON!!!
-        //Changed node and edge <T> to <Integer> and that seems to have taken away teh errors but idk man, check it
-        String text = "";
-        text.join("===PRINTING GRAPH===\n");
+        StringBuilder text = new StringBuilder();
+        text.append("===PRINTING GRAPH===\n");
         for (Node<T> vertex : graph.getGraph()){
-            text.join("Vertex " + vertex.getValue());
+            text.append("Vertex " + vertex.getValue());
             for (Edge<T> edge : vertex.getEdgeList()){
-                text.join("    -> " + edge.getSink().getValue());
+                text.append("    -> " + edge.getSink().getValue());
             }
-            text.join("\n");
+            text.append("\n");
         }
 
         try {
-            Files.write(Paths.get(path), text.getBytes(), StandardOpenOption.APPEND);
+            Files.writeString(Paths.get(path), text.toString(), StandardOpenOption.APPEND);
+            System.out.println("Cycle exported to file.");
         } catch (IOException e) {
-            return false;
+            System.out.println("Error writing to file.");
         }
 
         return true;
@@ -62,7 +62,7 @@ public class FileHandler<T> {
      */
 
     public boolean exportCycle(Cycle<T> cycle) throws IOException {
-        File myFile = new File("cycle."+"graphName"+".txt");
+        File myFile = new File("src//" + "cycle."+"graphName"+".txt");
         String path = System.getProperty("user.dir") + "\\src\\cycle." + "graphName" +".txt";
         if (myFile.createNewFile()) {
             System.out.println("File created: " + myFile.getName());
@@ -72,27 +72,31 @@ public class FileHandler<T> {
             return false;
         }
 
-        String text = "";
-        text.join("===PRINTING CYCLE===\n");
+        StringBuilder text = new StringBuilder();
+        text.append("===PRINTING CYCLE===\n");
         if (cycle != null){
-            text.join("Cycle found: ");
+            text.append("Cycle found: ");
             for (Node cycleNode : cycle.getCycle()){
-                text.join(cycleNode.getValue() + " -> ");
+                text.append(cycleNode.getValue() + " -> ");
+
             }
-            text.join(cycle.getCycle().getFirst().getValue().toString());
+            text.append(cycle.getCycle().getFirst().getValue().toString());
         } else {
             System.out.println("No cycle found.");
             return false;
         }
 
         try {
-            Files.write(Paths.get(path), text.getBytes(), StandardOpenOption.APPEND);
+            Files.writeString(Paths.get(path), text.toString(), StandardOpenOption.APPEND);
+            System.out.println("Cycle exported to file.");
         } catch (IOException e) {
+            System.out.println("Error writing to file.");
             return false;
         }
 
         return true;
     }
+
 
 }
 
