@@ -25,7 +25,7 @@ public class DiWeGraph<T> implements Graph<T> {
         // not be a duplicate
         if(!graph.isEmpty()){
             if (searchVertices(vertex) != null){
-//                System.out.println("LOG: Could not add " + vertex.getValue() + " to the graph because it already exists!");
+                System.out.println("LOG: Could not add " + vertex.getValue() + " to the graph because it already exists!");
                 return false;
             }
         }
