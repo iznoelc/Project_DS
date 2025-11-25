@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.math.BigInteger;
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -125,8 +126,8 @@ public class BlumBlumShub {
     }
 
     //generates arrays of bytes
-    public ArrayList<Integer> buffer(int size, int bitNum) {
-        ArrayList<Integer> buf = new ArrayList<>();
+    public HashSet<Integer> buffer(int size, int bitNum) {
+        HashSet<Integer> buf = new HashSet<>();
         for (int i = 0; i < size; i++) {
             buf.add(nextByte(bitNum));
         }

@@ -48,7 +48,7 @@ public class FileHandler<T> {
                 text.append(cycleNode.getValue() + " -> ");
 
             }
-            text.append(cycle.getCycle().getFirst().getValue().toString());
+            //text.append(cycle.getCycle().getFirst().getValue().toString());
         } else {
             System.out.println("No cycle found.");
             return false;

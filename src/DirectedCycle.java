@@ -99,7 +99,7 @@ public class DirectedCycle<T> implements Cycle<T> {
         // if it returns FALSE
         // there is not a cycle.
 
-
+        System.out.println("No cycle found.");
         return null;
     }
 
@@ -111,7 +111,7 @@ public class DirectedCycle<T> implements Cycle<T> {
             for (Node cycleNode : cycle){
                 System.out.print(cycleNode.getValue() + " -> ");
             }
-            System.out.println(cycle.getFirst().getValue());
+            //System.out.println(cycle.getFirst().getValue());
         } else {
             System.out.println("No cycle found.");
         }
