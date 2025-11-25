@@ -2,10 +2,6 @@ import java.awt.*;
 import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Scanner;
-import java.util.ArrayList;
-
-//NOTE TO SELF!!!
-//make default seeds p and q so that it tells user input is wrong and asks if they want to use default or try again
 
 public class BlumBlumShub {
     //range made by p and q
@@ -15,8 +11,11 @@ public class BlumBlumShub {
     //where are we right now in the process?
     int current_state;
 
-
-
+    /**
+     *
+     * @param num
+     * @return true or false related to prime
+     */
     //helper methods for math stuff
     public boolean isPrime(int num){
         //if the number is 1 or negative it is not prime
@@ -29,6 +28,13 @@ public class BlumBlumShub {
         }
         return true;
     }
+
+    /**
+     *
+     * @param a
+     * @param b
+     * @return true or false related to coprime
+     */
     private boolean isCoprime(int a, int b) {
         //make big integer objects to be plugged in later
         BigInteger bigA = BigInteger.valueOf(a);
@@ -45,11 +51,17 @@ public class BlumBlumShub {
         }
     }
 
+    /**
+     * set values, sudoConstructor for internal use
+     */
     public void defaultSetup(){
         this.range = 499*547;
         this.seed = 12345;
     }
 
+    /**
+     * set values, sudoConstructor for user use
+     */
     public void setUp(){
         //get ready for user input
         Scanner scanner = new Scanner(System.in);
@@ -84,7 +96,6 @@ public class BlumBlumShub {
         } else {
             System.out.println("ERROR: Invalid p or q Input");
         }
-
         //if invalid ask eitehr to set default or run recursively
         System.out.println("Uh oh seems there's been an issue. Would you like to:\n" +
                 "1. use defaults \n" +
@@ -104,6 +115,10 @@ public class BlumBlumShub {
         }
     }
 
+    /**
+     * getter
+     * @return current state
+     */
     //deals with
     private int nextState() {
         //squares state, makes sure its in range, multiplies, and finally updates
@@ -111,11 +126,20 @@ public class BlumBlumShub {
         return current_state;
     }
 
+    /**
+     * move onto teh next state
+     * @return the next state which will be set as current state
+     */
     //advances using nextbit and returns either 0 or 1
     public int nextBit() {
         return nextState() & 1;
     }
 
+    /**
+     *
+     * @param bitNum
+     * @return random number
+     */
     //loops 8 times, either advances one or takes a random bit
     public int nextByte(int bitNum) {
         int b = 0;
@@ -125,6 +149,12 @@ public class BlumBlumShub {
         return b;
     }
 
+    /**
+     *
+     * @param size
+     * @param bitNum
+     * @return hashset of random numbers
+     */
     //generates arrays of bytes
     public HashSet<Integer> buffer(int size, int bitNum) {
         HashSet<Integer> buf = new HashSet<>();
