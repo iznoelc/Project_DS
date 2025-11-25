@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Queue;
 
 /**
- * A class intended to represent a directed, weighted graph
+ * A class intended to represent a directed, weighted graph.
+ * @param <T> Can take any type
  */
 public class DiWeGraph<T> implements Graph<T> {
     private List<Node<T>> graph;
@@ -32,7 +33,7 @@ public class DiWeGraph<T> implements Graph<T> {
 
         graph.add(vertex);
 
-//        System.out.println("LOG: Successfully added " + vertex.getValue() + " to graph.");
+        System.out.println("LOG: Successfully added " + vertex.getValue() + " to graph.");
         return true;
     }
 
@@ -45,7 +46,7 @@ public class DiWeGraph<T> implements Graph<T> {
     public boolean removeVertex(Node<T> vertex) {
         // if the graph is empty, there will be nothing to remove
         if (graph.isEmpty()){
-//            System.out.println("LOG: Nothing to remove; graph is empty");
+            System.out.println("LOG: Nothing to remove; graph is empty");
             return false;
         }
 
@@ -63,7 +64,7 @@ public class DiWeGraph<T> implements Graph<T> {
                 // if the vertex we want to remove is in this list (targetSink),
                 // we want to REMOVE this connection, because the vertex we are deleting will
                 // no longer be in the graph.
-                Edge edgeToCheck = searchEdges(node.getEdgeList(), vertex);
+                Edge<T> edgeToCheck = searchEdges(node.getEdgeList(), vertex);
                 if (edgeToCheck != null){
                     node.getEdgeList().remove(edgeToCheck);
                 }
@@ -89,13 +90,13 @@ public class DiWeGraph<T> implements Graph<T> {
 
         // we don't want to add an edge if the source already has a connection to the sink
         if (searchEdges(source.getEdgeList(), sink) != null){
-//            System.out.println("LOG: Was unable to add edge with source " + source.getValue() + " to sink " + sink.getValue()
-//                    + " with weight " + weight + " because it already exists in the graph.");
+            System.out.println("LOG: Was unable to add edge with source " + source.getValue() + " to sink " + sink.getValue()
+                    + " with weight " + weight + " because it already exists in the graph.");
             return false;
         } else {
             source.getEdgeList().add(newEdge);
-//            System.out.println("LOG: Adding new edge with source " + source.getValue() + " to sink " + sink.getValue()
-//                    + " with weight " + weight);
+            System.out.println("LOG: Adding new edge with source " + source.getValue() + " to sink " + sink.getValue()
+                    + " with weight " + weight);
         }
         return true;
     }
@@ -124,19 +125,14 @@ public class DiWeGraph<T> implements Graph<T> {
      *
      * @param source origin of the path
      * @param sink destination of the path
-     * @return the path found
+     * @return the path found, null if path is not found
      */
     @Override
     public Path<T> findPath(Node<T> source, Node<T> sink){
-        int n = this.graph.size();
-
-        // keep track of visited vertices
         ArrayList<Node<T>> vis = new ArrayList<>();
-
         Queue<Node<T>> q = new LinkedList<>();
         Queue<Path<T>> pathQueue = new LinkedList<>();
 
-        // mark the source node as visited and enqueue it
         vis.add(source);
         q.add(source);
         Path<T> initialPath = new Path<>();
@@ -156,10 +152,8 @@ public class DiWeGraph<T> implements Graph<T> {
             Node<T> curr = q.poll();
             Path<T> currPath = pathQueue.poll();
 
-            // if current vertex is the destination, return true
             if (curr == sink && currPath.getPath().size() > 1){
-                // initial path cost from first node to second node in the path gets skipped,
-                // ensure it's added.
+                // initial path cost from first node to second node in the path gets skipped, ensure it's added.
                 currPath.setPathCost(currPath.getPathCost() +
                         currPath.getPath().getFirst().getEdgeList().getFirst().getWeight());
                 return currPath;
@@ -168,9 +162,10 @@ public class DiWeGraph<T> implements Graph<T> {
             for (int i = 0; i < curr.getEdgeList().size(); i++){
                 Node<T> nextVertex = curr.getEdgeList().get(i).getSink();
 
+                // edge case - cycle
                 if (source == sink){
                     if (nextVertex == source){
-                        System.out.println("You are trying to detect a cycle.");
+                        System.out.println("The path you have entered exists and is a cycle.");
                         Path<T> newPath = new Path<>();
                         assert currPath != null;
 
@@ -186,9 +181,7 @@ public class DiWeGraph<T> implements Graph<T> {
                     }
                 }
 
-                // if next vertex has not been visited
                 if (!vis.contains(nextVertex)){
-                    // mark it as visited and enqueue it
                     vis.add(nextVertex);
                     q.add(nextVertex);
                     Path<T> newPath = new Path<>();
@@ -202,7 +195,6 @@ public class DiWeGraph<T> implements Graph<T> {
             }
         }
 
-        // bfs complete without reaching sink node, no path. return false.
         System.out.println("Path from " + source.getValue() + " to " + sink.getValue() + " does not exist.");
         return null;
     }
@@ -298,7 +290,7 @@ public class DiWeGraph<T> implements Graph<T> {
     public int getNumNodes(){ return graph.size(); }
 
     /**
-     * Find user input in the graph.
+     * Helper function to find user input to the corresponding node in the graph.
      * @param input value to be found in the graph
      * @return the node in the graph if data is found, null if not found
      */

@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 /**
  * Find a cycle in a Directed graph.
- *
  * Base DFS algorithm to find cycle taken from channel "take U forward" on YouTube.
  * <a href="https://www.youtube.com/watch?v=9twcmtQj4DU">...</a>
  *
@@ -12,6 +11,16 @@ public class DirectedCycle<T> implements Cycle<T> {
     private Node<T> successNode;
     public ArrayList<Node<T>> cycle = new ArrayList<>();
 
+    /**
+     * Recursively calls the dfs algorithm on all unvisited adjacent nodes to the node passed to it.
+     * Finds a cycle according to if the success node has been previously visited on the same path, meaning
+     * we've circled around and thus have a cycle.
+     * @param node, current node to check adjacent nodes of
+     * @param graph, our entire graph
+     * @param vis, an array list containing nodes we have already visited
+     * @param pathVis, an array list containing nodes we have already visited on the CURRENT PATH
+     * @return true if path is found, false otherwise
+     */
     @Override
     public boolean dfsCheck(Node<T> node, Graph<T> graph, ArrayList<Node<T>> vis, ArrayList<Node<T>> pathVis){
         // update visited and path visited to include current node because we have now seen this node AND seen
@@ -45,6 +54,12 @@ public class DirectedCycle<T> implements Cycle<T> {
         return false;
     }
 
+    /**
+     * Finds a cycle in a graph by ensuring all nodes are checked in the graph and deploying the dfs check on
+     * them to detect cycles.
+     * @param graph the graph we want to find a cycle on
+     * @return cycle if found, null if not
+     */
     @Override
     public ArrayList<Node<T>> findCycle(Graph<T> graph){
         System.out.println("Find cycle");
