@@ -8,5 +8,8 @@ Final Project for Data Structures
 
 # Limitations
 1. We used the **BlumBlumShub** algorithm to randomly generate the graph's node's values and the node's weights. However, we were unable to determine a way to cap the BlumBlumShub number generation. We needed to be able to force numbers between a certain range when generating nodes (the graph has a minimum of 3 nodes and a maximum of 15) and edges (each vertex can have up to 3 edges). Therefore, we used **java.util.random** to generate these numbers.
-2. Not necessarily a limitation, but a *notice*, when randomly generating graphs, we don't let nodes have paths to themselves. In reality, this could be the case, but in order to better display the cycle functionality, we do not allow it. This is because if a node has a path to itself, it is considered a cycle, and therefore, the findCycle method is prioritizing nodes with paths to themselves.
+2. We also capped the "extra random" number for the BlumBlumShub algorithm (a value input by the user). We did this so that the program wouldn't try to generate huge numbers and then crash. 
+3. Sometimes the program gets stuck while adding the randomly generated vertices to the graph. This happens very rarely, and is fixed by rerunning the program. 
+
+**Not necessarily a limitation, but a *notice*, when randomly generating graphs, we don't let nodes have paths to themselves. In reality, this could be the case, but in order to better display the cycle functionality, we do not allow it. This is because if a node has a path to itself, it is considered a cycle, and therefore, the findCycle method is prioritizing nodes with paths to themselves.
 

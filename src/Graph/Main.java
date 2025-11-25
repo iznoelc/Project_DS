@@ -1,10 +1,14 @@
+package Graph;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
 
-import static java.lang.Math.random;
+import Exporting.FileHandler;
+import Random.BlumBlumShub;
+
 import java.util.Set;
 
 public class Main {
@@ -27,7 +31,7 @@ public class Main {
         int nodeCount = numNodes;
 
         BBS.setUp();
-        DiWeGraph<Integer> graph = new DiWeGraph<>();
+        DiWeGraph<Integer> graph = new DiWeGraph<Integer>();
 
         // Ensure the exact number of nodes determined by numNodes is generated (otherwise, it will lead to
         // an index out of bounds exception.
@@ -77,6 +81,7 @@ public class Main {
         String graphFileName;
         DiWeGraph<Integer> graph = null;
         Scanner scanner = new Scanner(System.in);
+        ArrayList<Path<Integer>> paths = new ArrayList<>();
 
         System.out.println("Lets start by making a random graph!");
         graph = main.generateGraph(11);
@@ -91,18 +96,20 @@ public class Main {
                     System.out.println("Exporting graph...");
                     System.out.println("What do you want to call your file? (Cannot overwrite so pick a new name if you already exported a graph): ");
                     graphFileName = scanner.next();
-                    Cycle<Integer> cycle = new DirectedCycle<>();
+                    Cycle<Integer> cycle = new DirectedCycle<Integer>();
                     cycle.findCycle(graph);
-                    file.exportGraph(graphFileName, graph, cycle);
+                    file.exportGraph(graphFileName, graph, cycle, paths);
+
+                    paths.clear(); // reset the paths before generating a new graph
 
                     // Generate a new graph
-                    System.out.println("Please give me a number just to make the graph extra random. (At least 4): ");
+                    System.out.println("Please give me a number just to make the graph extra random. (At least 5, Less than 25): ");
                     // Force extra to be at least 4 because any lower bitNum value will not be able to generate at least 15
                     // unique vertex values for the graph (our max number of nodes for the graph).
                     int extra = scanner.nextInt();
-                    while (extra < 5){
-                        System.out.println("Invalid input. You must enter an integer greater than 4.");
-                        System.out.println("Please give me a number just to make the graph extra random. (At least 4): ");
+                    while (extra < 5 || extra > 25){
+                        System.out.println("Invalid input. You must enter an integer that's at least 5 and less than 25.");
+                        System.out.println("Please give me a number just to make the graph extra random. (At least 5): ");
                         extra = scanner.nextInt();
                     }
 
@@ -122,11 +129,12 @@ public class Main {
                     Path<Integer> path = graph.findPath(start_node, end_node); //going to be using helper class once made to fix
                     if (path != null){
                         path.printPath();
+                        paths.add(path);
                     }
                     break;
                 case 3:
                     System.out.println("Checking graph for cycle...");
-                    Cycle<Integer> cyclePrint = new DirectedCycle<>();
+                    Cycle<Integer> cyclePrint = new DirectedCycle<Integer>();
                     cyclePrint.findCycle(graph);
                     break;
                 case 4:

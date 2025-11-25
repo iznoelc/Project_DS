@@ -1,3 +1,5 @@
+package Graph;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
@@ -86,7 +88,7 @@ public class DiWeGraph<T> implements Graph<T> {
      */
     @Override
     public boolean addEdge(Node<T> source, Node<T> sink, int weight) {
-        Edge<T> newEdge = new Edge<>(weight, source, sink);
+        Edge<T> newEdge = new Edge<T>(weight, source, sink);
 
         // we don't want to add an edge if the source already has a connection to the sink
         if (searchEdges(source.getEdgeList(), sink) != null){
@@ -135,7 +137,7 @@ public class DiWeGraph<T> implements Graph<T> {
 
         vis.add(source);
         q.add(source);
-        Path<T> initialPath = new Path<>();
+        Path<T> initialPath = new Path<T>();
         initialPath.getPath().add(source);
         pathQueue.add(initialPath);
 
@@ -166,7 +168,7 @@ public class DiWeGraph<T> implements Graph<T> {
                 if (source == sink){
                     if (nextVertex == source){
                         System.out.println("The path you have entered exists and is a cycle.");
-                        Path<T> newPath = new Path<>();
+                        Path<T> newPath = new Path<T>();
                         assert currPath != null;
 
                         // add lost weight from 1st connection to 2nd connection
@@ -184,7 +186,7 @@ public class DiWeGraph<T> implements Graph<T> {
                 if (!vis.contains(nextVertex)){
                     vis.add(nextVertex);
                     q.add(nextVertex);
-                    Path<T> newPath = new Path<>();
+                    Path<T> newPath = new Path<T>();
                     assert currPath != null;
                     newPath.getPath().addAll(currPath.getPath());
                     newPath.setPathCost(currPath.getPathCost());

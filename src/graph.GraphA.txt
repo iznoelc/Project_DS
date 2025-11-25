@@ -1,0 +1,13 @@
+===GRAPH===
+Vertex 1046
+Vertex 1661
+Vertex 1229    -> 335
+Vertex 1151    -> 335
+Vertex 335    -> 1229    -> 1151
+===CYCLE===
+Cycle found: 1229 -> 335 -> 
+===USER GENERATED PATHS===
+1229 -> 335 -> 1151 -> 
+
+1229 -> 335 -> 
+

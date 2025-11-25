@@ -1,10 +1,13 @@
+package Exporting;
+
+import Graph.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.io.IOException;
-import java.util.Scanner;
+import java.util.ArrayList;
 
 public class FileHandler<T> {
 
@@ -19,7 +22,7 @@ public class FileHandler<T> {
      * @return boolean
      * @throws IOException
      */
-    public boolean exportGraph(String fileName, DiWeGraph<T> graph, Cycle<T> cycle) throws IOException {
+    public boolean exportGraph(String fileName, DiWeGraph<T> graph, Cycle<T> cycle, ArrayList<Path<T>> paths) throws IOException {
         File myFile = new File("src//" + "graph." + fileName + ".txt");
         String path = System.getProperty("user.dir") + "\\src\\graph." + fileName + ".txt";
         if (myFile.createNewFile()) {
@@ -31,7 +34,7 @@ public class FileHandler<T> {
         }
 
         StringBuilder text = new StringBuilder();
-        text.append("===PRINTING GRAPH===\n");
+        text.append("===GRAPH===\n");
         for (Node<T> vertex : graph.getGraph()){
             text.append("Vertex " + vertex.getValue());
             for (Edge<T> edge : vertex.getEdgeList()){
@@ -41,17 +44,30 @@ public class FileHandler<T> {
         }
 
         //StringBuilder text = new StringBuilder();
-        text.append("===PRINTING CYCLE===\n");
+        text.append("===CYCLE===\n");
         if (cycle != null){
             text.append("Cycle found: ");
             for (Node cycleNode : cycle.getCycle()){
                 text.append(cycleNode.getValue() + " -> ");
 
             }
+            text.append("\n");
             //text.append(cycle.getCycle().getFirst().getValue().toString());
         } else {
-            System.out.println("No cycle found.");
-            return false;
+            System.out.println("No cycle found.\n");
+            //return false;
+        }
+
+        text.append("===USER GENERATED PATHS===\n");
+        if (!paths.isEmpty()){
+            for (Path<T> p : paths){
+                for (Node<T> n : p.getPath()){
+                    text.append(n.getValue() + " -> ");
+                }
+                text.append("\n\n");
+            }
+        } else {
+            text.append("User did not generate any paths.\n");
         }
 
         try {

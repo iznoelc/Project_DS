@@ -1,3 +1,5 @@
+package Graph;
+
 /**
  * A class to represent an edge in a graph.
  * @param <T> Take any type

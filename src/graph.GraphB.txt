@@ -1,0 +1,20 @@
+===GRAPH===
+Vertex 16
+Vertex 48
+Vertex 33    -> 8    -> 1
+Vertex 1    -> 8
+Vertex 34    -> 13    -> 12    -> 33
+Vertex 53
+Vertex 6    -> 53
+Vertex 8
+Vertex 9
+Vertex 10    -> 6
+Vertex 12    -> 33    -> 34
+Vertex 13    -> 6
+===CYCLE===
+Cycle found: 34 -> 12 -> 
+===USER GENERATED PATHS===
+33 -> 8 -> 
+
+33 -> 1 -> 
+

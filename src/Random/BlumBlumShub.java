@@ -1,4 +1,5 @@
-import java.awt.*;
+package Random;
+
 import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Scanner;
